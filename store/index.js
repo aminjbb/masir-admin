@@ -17,17 +17,25 @@ export const state = () => ({
   ranges: [],
   services: [],
   servicesRequirement: [],
+  vehicles:[],
   customer: '',
   productPageLength: 1,
   blogPageLength: 1,
   userPageLength: 1,
   orderPageLength: 1,
   servicePageLength: 1,
-  servicesRequirementPageLength: 1
+  servicesRequirementPageLength: 1,
+  vehiclePageLength: 1
 
 })
 
 export const mutations = {
+  set_vehicles(state , obj){
+    state.vehicles = obj
+  },
+  set_vehiclePageLength(state, obj) {
+    state.vehiclePageLength = obj
+  },
   set_servicesRequirementPageLength(state, obj) {
     state.servicesRequirementPageLength = obj
   },
@@ -96,6 +104,25 @@ export const mutations = {
 
 
 export const actions = {
+  async set_vehicles({commit}, page) {
+    const requestHeaders = {
+      Authorization: "Bearer " + VueCookies.get("token"),
+    };
+    const query = gql`
+        query{
+            adminVehicles(limit:10,offset:${page}){
+                 totalCount
+                results{
+                id,
+                name,
+
+              }
+            }
+          } `;
+    const obj = await this.$graphql.default.request(query, {}, requestHeaders);
+    commit('set_vehiclePageLength', Math.round(obj.adminVehicles.totalCount / 20));
+    commit('set_vehicles', obj.adminVehicles.results);
+  },
   async set_servicesRequirement({commit}, page) {
     const requestHeaders = {
       Authorization: "Bearer " + VueCookies.get("token"),
@@ -424,6 +451,9 @@ export const actions = {
 
 
 export const getters = {
+  get_vehicles(state ){
+    return state.vehicles
+  },
   get_servicesRequirementPageLength(state) {
     return state.servicesRequirementPageLength
   },
