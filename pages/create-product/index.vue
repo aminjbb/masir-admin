@@ -22,6 +22,7 @@
 
                         <div class="mx-3">
                             <div class="selected-image-box">
+                              {{main[0].base64}}
                                 <img :src="main[0].base64" v-if="main[0]" width="117px" height="117px" alt=""
                                     class="br-15" />
                             </div>
@@ -372,7 +373,6 @@ export default {
 
     watch: {
         image(val) {
-            console.log(val);
             this.imageToBase64()
         },
 

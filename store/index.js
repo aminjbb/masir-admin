@@ -281,6 +281,7 @@ export const actions = {
                     mainTitle,
                     image,
                     CreatedAt,
+                    isActive
 
                 }
 

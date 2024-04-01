@@ -38,7 +38,7 @@
           </v-col>
         </v-row> -->
 
-            <v-card height="103" outlined class="ma-3 mx-10 br-15" v-for="blog in blogs" :key="blog.id">
+            <v-card height="103" outlined class="ma-3 mx-10 br-15" v-for="(blog , index) in blogs" :key="blog.id">
                 <v-row align="center" class="fill-height">
                     <v-col cols="8">
                         <v-row justify="space-between" align="center" class="fill-height mt-3 mr-5">
@@ -55,6 +55,10 @@
                             <span>
                                 {{ convertDate(blog.CreatedAt) }}
                             </span>
+                            <span>
+                                <v-switch @change="activePost(index)" v-model="form[index].active" color="success"></v-switch>
+                            </span>
+
 
                         </v-row>
                     </v-col>
@@ -85,12 +89,14 @@
 
 <script>
 import { PublicMethod } from '~/store/classes.js'
+import axios from "axios";
 export default {
     name: 'IndexPage',
     data() {
         return {
             message: '',
-            page: 1
+            page: 1,
+            form:[]
         }
     },
 
@@ -99,6 +105,24 @@ export default {
     },
 
     methods: {
+
+      activePost(index){
+        axios({
+          method: 'PATCH',
+          url: process.env.apiUrl + `blog_post/v1/admin/${this.blogs[index].id}/`,
+          headers: {
+            Authorization: "Bearer " + this.$cookies.get("token"),
+          },
+          data: {
+            is_active: this.form[index].active,
+          }
+        })
+          .then(response => {
+          })
+          .catch(err => {
+            this.loading = false;
+          })
+      },
         deleteBlog(id) {
             this.$store.commit('public/set_deleteModal', true)
             this.$store.commit('public/set_statusDelete', 'blog')
@@ -124,7 +148,17 @@ export default {
             let page = (val - 1) * 20
             let fillter = ',offset:' + page
             this.$store.dispatch('set_blogs', fillter)
-        }
+        },
+      blogs(val){
+        console.log(val ,'blog')
+          val.forEach(element=>{
+            const form = {
+              active : element.isActive
+            }
+            this.form.push(form)
+            console.log(this.form)
+          })
+      }
     },
     computed: {
         blogs() {
