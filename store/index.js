@@ -294,43 +294,45 @@ export const actions = {
   },
   async set_orders({commit}, form) {
     const requestHeaders = {
-      Authorization: "Bearer " + VueCookies.VueCookies.get("token"),
+      Authorization: "Bearer " +  VueCookies.get("token"),
     };
     const query = gql`
         query{
             adminOrders(limit:20  ` + form + `){
                 totalCount
                 results{
-                    id,
-                    finalPrice,
-                    delivery{
-                        id,
-                        name
-                    }
-                    address{
-                        addressDetail
-                    }
-                    createdAt,
-                    currentStatus{
-                        name
-                    },
-                    details{
-                        variantName,
-                        variantUnitPriceWithoutDiscount,
-                        variantUnitPrice
-                    }
-                    payments{
-                        id,
-                        amount,
-                        paidAt
-                    }
+                     id
+                    CreatedAt
+                    UpdatedAt
                     customer{
-                        client{
-                            mobile
-                            user{
-                                firstName
-                            }
-                        }
+                      user{
+                        firstName,
+                        lastName,
+                        mobile,
+                        id
+                      }
+                    }
+                    totalPriceWithoutDiscount
+                    deliveryPrice
+                    packagePrice
+                    totalItemsPrice
+                    totalPrice
+                    currentStatus
+                    details{
+                      id
+                      CreatedAt
+                      UpdatedAt
+                      product{
+                        persianName,
+                        id,
+                        englishName
+                      }
+                      quantity
+                      withoutDiscountUnitPrice
+                      unitPrice
+                    }
+                    statusLogs{
+                      status
                     }
                 }
             }

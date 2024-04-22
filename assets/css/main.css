@@ -579,7 +579,7 @@ ol li {
 
 /* Track
 ::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 5px grey; 
+  box-shadow: inset 0 0 5px grey;
   border-radius: 5px;
 } */
 
@@ -1260,6 +1260,14 @@ header {
   width: 98px;
   height: 44px;
   background: #EBEEFF;
+  border: 1px solid #0023DD;
+  border-radius: 10px;
+}
+
+.status-box-warning {
+  width: 98px;
+  height: 44px;
+  background: #f6f7517d;
   border: 1px solid #0023DD;
   border-radius: 10px;
 }
