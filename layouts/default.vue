@@ -146,9 +146,9 @@ export default {
     }
   },
   beforeMount() {
-    // if (!this.$cookies.get('token')) {
-    //   this.$router.push('/login')
-    // }
+    if (!this.$cookies.get('token')) {
+      this.$router.push('/login')
+    }
 
   }
 }
