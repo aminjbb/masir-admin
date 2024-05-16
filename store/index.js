@@ -25,11 +25,19 @@ export const state = () => ({
   orderPageLength: 1,
   servicePageLength: 1,
   servicesRequirementPageLength: 1,
-  vehiclePageLength: 1
+  vehiclePageLength: 1,
+  adminProjects:[],
+  adminProjectsPageLength:1
 
 })
 
 export const mutations = {
+  set_adminProjectsPageLength(state , num){
+    state.adminProjectsPageLength =  num
+  },
+  set_adminProjects(state , obj){
+    state.adminProjects = obj
+  },
   set_vehicles(state , obj){
     state.vehicles = obj
   },
@@ -104,6 +112,39 @@ export const mutations = {
 
 
 export const actions = {
+  async set_adminProjects({commit}, page) {
+    const requestHeaders = {
+      Authorization: "Bearer " + VueCookies.get("token"),
+    };
+    const query = gql`
+        query{
+            adminProjects(limit:10,offset:${page}){
+                 totalCount
+                results{
+                id
+                 name,
+                 employer{
+                    user{
+                      firstName
+                      lastName
+                      mobile
+                    }
+                 }
+                 isPublished,
+                 projectServices{
+                    service{name}
+                    budget
+                 }
+                 predictedStartDate,
+                 predictedCompletionDate
+
+              }
+            }
+          } `;
+    const obj = await this.$graphql.default.request(query, {}, requestHeaders);
+    commit('set_adminProjectsPageLength', Math.round(obj.adminProjects.totalCount / 20));
+    commit('set_adminProjects', obj.adminProjects.results);
+  },
   async set_vehicles({commit}, page) {
     const requestHeaders = {
       Authorization: "Bearer " + VueCookies.get("token"),
@@ -454,6 +495,12 @@ export const actions = {
 
 
 export const getters = {
+  get_adminProjectsPageLength(state , num){
+    return  state.adminProjectsPageLength
+  },
+  get_adminProjects(state , obj){
+    return   state.adminProjects
+  },
   get_vehicles(state ){
     return state.vehicles
   },

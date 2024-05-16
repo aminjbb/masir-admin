@@ -7,10 +7,10 @@
                         <div class="select-image-box">
                             <label class="label">
                                 <div class="text-center">
-                                    <img :src="pre.base64" v-if="pre.base64" width="394" height="394" alt=""
+                                    <img :src="pre?.base64" v-if="pre?.base64" width="394" height="394" alt=""
                                         class="mt-17 br-25">
                                     <img src="~/assets/img/ImageSquare.png" v-else alt="">
-                                    <div class="text-center" v-if="!pre.base64">
+                                    <div class="text-center" v-if="!pre?.base64">
                                         <span class="t14400">محل بارگذاری تصویر محصول</span>
                                     </div>
                                     <v-file-input class="default-file-input" v-model="image" accept="image/*"
@@ -22,16 +22,16 @@
 
                         <div class="mx-3">
                             <div class="selected-image-box">
-                              {{main[0].base64}}
-                                <img :src="main[0].base64" v-if="main[0]" width="117px" height="117px" alt=""
+                              {{main[0]?.base64}}
+                                <img :src="main[0]?.base64" v-if="main[0]" width="117px" height="117px" alt=""
                                     class="br-15" />
                             </div>
                             <div class="selected-image-box mt-5">
-                                <img :src="main[1].base64" v-if="main[1]" width="117px" height="117px" alt=""
+                                <img :src="main[1]?.base64" v-if="main[1]" width="117px" height="117px" alt=""
                                     class="br-15" />
                             </div>
                             <div class="selected-image-box mt-5">
-                                <img :src="main[2].base64" v-if="main[2]" width="117px" height="117px" alt=""
+                                <img :src="main[2]?.base64" v-if="main[2]" width="117px" height="117px" alt=""
                                     class="br-15" />
                             </div>
                         </div>
@@ -381,7 +381,6 @@ export default {
 
     beforeMount() {
         this.$store.dispatch('set_categories', '')
-        this.$store.dispatch('set_collections', '')
     },
 
     computed: {

@@ -114,7 +114,7 @@ export default {
             Authorization: "Bearer " + this.$cookies.get("token"),
           },
           data: {
-            is_active: this.form[index].active,
+            is_active: this.form[index]?.active,
           }
         })
           .then(response => {
@@ -150,17 +150,18 @@ export default {
             this.$store.dispatch('set_blogs', fillter)
         },
       blogs(val){
-        console.log(val ,'blog')
           val.forEach(element=>{
             const form = {
-              active : element.isActive
+              active : element?.isActive
             }
             this.form.push(form)
-            console.log(this.form)
           })
       }
     },
-    computed: {
+  destroyed() {
+      this.$store.commit('set_blogs' , [])
+  },
+  computed: {
         blogs() {
             return this.$store.getters['get_blogs']
         },
